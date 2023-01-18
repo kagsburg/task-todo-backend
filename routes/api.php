@@ -14,11 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // prefix('api')->
-Route::group(['prefix'=> 'api'], function(){
+
+Route::group(['prefix'=> 'v1'], function(){
+   
     Route::post('login', 'App\Http\Controllers\AuthController@login');
     Route::post('register', 'App\Http\Controllers\AuthController@register');
+    // Route::get('export', 'App\Http\Controllers\CardController@export');
+    Route::get('filter', 'App\Http\Controllers\CardController@filter');
     Route::group(['middleware'=>['auth:sanctum']], function () {
         Route::resource('columns', 'App\Http\Controllers\ColumnController');
-        Route::resource('cards', 'App\Http\Controllers\CardController');
+        Route::post('cards/{id}', 'App\Http\Controllers\CardController@store');
+        Route::put('cards/{id}', 'App\Http\Controllers\CardController@update');
+        Route::delete('cards/{id}', 'App\Http\Controllers\CardController@destroy');
+        Route::get('cards/{id}', 'App\Http\Controllers\CardController@show');
+        // Route::resource('cards', 'App\Http\Controllers\CardController');
     });
 });

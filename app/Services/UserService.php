@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
 
 use Illuminate\Http\Request;
@@ -9,42 +9,56 @@ use Illuminate\Http\Response;
 use App\Services\ColumnService;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 class UserService {
 
     public function addUser (Request $request) {
-        $data=$request->validate([
-            'username' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:6'
+         
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|max:255',
+            'email' => 'required|max:255|Email|unique:users',
+            // password must be at least 8 characters 
+            'password' => 'required|min:8',
         ]);
-
-        $user = User ::create($data);
-        $token = $user->createToken('token')->plainTextToken;
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);
+        }
+        $user = User::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+        $token = $user->createToken($user->id)->plainTextToken;
+        $user['token'] = $token;
         $response = [
             'status' => 'success',
-            'user' => $user,
+            'data' => new UserResource($user),
             'token' => $token
         ];
-        return response($response)->setStatusCode(Response::HTTP_OK);
+          return response($response)->setStatusCode(Response::HTTP_CREATED);
 
     }
     public function login(Request $request){
-        $fields = $request->validate([
-            'username'=>'required|string',
-            'password'=>'required|string'
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'password' => 'required',
+        
         ]);
-        $user =User::where('username',$fields['username'])->first();
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);
+        }
+        $user =User::where('username',$request->username)->first();
 
-        if(!$user ||!Hash::check($fields['password'],$user->password)){
+        if(!$user ||!Hash::check($request->password,$user->password)){
             $response=[
                 'statusCode'=>401,
-                'message'=>'Invalid Password or Email',                
+                'message'=>'Invalid Password or Username',
+                
             ];
             return response($response);
         }
-        $token = $user->createToken('myapptoken')->plainTextToken;
+        $token = $user->createToken($user->id)->plainTextToken;
         $response=[
             'status'=>'success',
             'user'=>new UserResource($user),

@@ -17,11 +17,8 @@ class UserResource extends JsonResource
         return [
             'id'=> $this->id,
             'Fullname' => $this->user,
-            'Email' => $this->Email,
-            'Address'=>$this->Address,
-            'roleId' => $this->role_id,
-             'role_id' => $this->role_id ? Role::find($this->role_id)->role_name : '',
-            'Id Number'=>$this->NIN
+            'Email' => $this->email,
+            
         ];
     }
     public function with($request)

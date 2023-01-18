@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ColumnService;
-use App\Models\Column;
 
-use App\Models\Lease;
 class ColumnController extends Controller
 {
     //
@@ -19,19 +17,19 @@ class ColumnController extends Controller
     {
         return $this->columnService->getColumns();       
     }
-    public function show(Column $id)
+    public function show($id)
     {
         return $this->columnService->getColumn($id);
     }
     public function store(Request $request)
     {
-        return $this->columnService->createColumn( $request);
+        return $this->columnService->createColumn($request);
     }
-    public function update(Request $request,Column $id)
+    public function update(Request $request, $id)
     {
         return $this->columnService->updateColumn($request, $id);
     }
-    public function destroy(Column $id)
+    public function destroy($id)
     {
         return $this->columnService->deleteColumn($id);
     }
