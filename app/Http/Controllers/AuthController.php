@@ -19,4 +19,7 @@ class AuthController extends Controller
     public function register(Request $request){
         return $this->authService->addUser($request);
     }
+    public function logout(Request $request){
+        return $this->authService->logout($request);
+    }
 }

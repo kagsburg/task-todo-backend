@@ -19,6 +19,7 @@ Route::group(['prefix'=> 'v1'], function(){
    
     Route::post('login', 'App\Http\Controllers\AuthController@login');
     Route::post('register', 'App\Http\Controllers\AuthController@register');
+    Route::post('logout', 'App\Http\Controllers\AuthController@logout');
     // Route::get('export', 'App\Http\Controllers\CardController@export');
     Route::get('filter', 'App\Http\Controllers\CardController@filter');
     Route::group(['middleware'=>['auth:sanctum']], function () {

@@ -88,7 +88,7 @@ class CardService
         }
         $id->is_deleted = '1';
         $id->save();
-        return response()->json(['message' => 'Card deleted successfully']);
+        return response()->json(['message' => 'Card deleted successfully','status' => 'success']);
 
     }
 }

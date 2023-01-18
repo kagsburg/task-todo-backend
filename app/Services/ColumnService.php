@@ -73,13 +73,13 @@ class ColumnService
         //delete all cards in column
         $cards = $id->cards;
         if ($cards->isEmpty()) {
-            return response()->json(['message' => 'Column deleted successfully']);
+            return response()->json(['message' => 'Column deleted successfully','status' => 'success']);
         }
         foreach ($cards as $card) {
             $card->is_deleted = '1';
             $card->save();
         }
-        return response()->json(['message' => 'Column deleted successfully']);
+        return response()->json(['message' => 'Column deleted successfully','status' => 'success']);
         // return ($id)->response()->setStatusCode(Response::HTTP_OK);
 
     }

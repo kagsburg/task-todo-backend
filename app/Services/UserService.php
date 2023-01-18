@@ -72,7 +72,8 @@ class UserService {
         }
         // auth('sanctum')->user()->tokens()->delete();
         return response( [
-            'message'=>'User Logged out'
+            'message'=>'User Logged out',
+            'status'=>'success'
         ],200);
     }
 
