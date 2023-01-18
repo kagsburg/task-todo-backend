@@ -17,7 +17,7 @@ class UserService {
          
         $validator = Validator::make($request->all(), [
             'username' => 'required|max:255',
-            'email' => 'required|max:255|Email|unique:users',
+            'email' => 'required|max:255|Email',
             // password must be at least 8 characters 
             'password' => 'required|min:8',
         ]);
